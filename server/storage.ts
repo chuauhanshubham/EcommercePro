@@ -276,6 +276,7 @@ export class MemStorage implements IStorage {
     const category: Category = {
       ...insertCategory,
       id: this.currentCategoryId++,
+      description: insertCategory.description || null,
     };
     this.categories.set(category.id, category);
     return category;
@@ -311,6 +312,11 @@ export class MemStorage implements IStorage {
     const product: Product = {
       ...insertProduct,
       id: this.currentProductId++,
+      description: insertProduct.description || null,
+      categoryId: insertProduct.categoryId || null,
+      stock: insertProduct.stock || 0,
+      imageUrl: insertProduct.imageUrl || null,
+      isActive: insertProduct.isActive !== false ? true : false,
       createdAt: new Date(),
     };
     this.products.set(product.id, product);
