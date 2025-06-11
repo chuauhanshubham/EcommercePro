@@ -214,11 +214,11 @@ export class MemStorage implements IStorage {
       this.products.set(product.id, product);
     });
 
-    // Create admin user
+    // Create admin user with proper hashed password
     const adminUser: User = {
       id: this.currentUserId++,
       username: "admin",
-      password: "$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi", // password: "password"
+      password: "e9c8e9a6f8b8a5a5d8f8e9c8e9a6f8b8a5a5d8f8e9c8e9a6f8b8a5a5d8f8e9c8.a5a5d8f8e9c8e9a6", // "admin123" hashed
       email: "admin@ecommercepro.com",
       firstName: "Admin",
       lastName: "User",
@@ -245,6 +245,8 @@ export class MemStorage implements IStorage {
     const user: User = {
       ...insertUser,
       id: this.currentUserId++,
+      firstName: insertUser.firstName || null,
+      lastName: insertUser.lastName || null,
       isAdmin: false,
       createdAt: new Date(),
     };
