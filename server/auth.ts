@@ -20,6 +20,12 @@ async function hashPassword(password: string) {
   const buf = (await scryptAsync(password, salt, 64)) as Buffer;
   return `${buf.toString("hex")}.${salt}`;
 }
+const sessionSettings: session.SessionOptions = {
+  secret: process.env.SESSION_SECRET!, // <-- આ લાઇનમાં `!` છે, જેનો અર્થ છે એ જરૂર છે
+  resave: false,
+  saveUninitialized: false,
+  store: storage.sessionStore,
+};
 
 async function comparePasswords(supplied: string, stored: string) {
   const parts = stored.split(".");
