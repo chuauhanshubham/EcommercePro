@@ -218,7 +218,7 @@ export class MemStorage implements IStorage {
     const adminUser: User = {
       id: this.currentUserId++,
       username: "admin",
-      password: "e9c8e9a6f8b8a5a5d8f8e9c8e9a6f8b8a5a5d8f8e9c8e9a6f8b8a5a5d8f8e9c8.a5a5d8f8e9c8e9a6", // "admin123" hashed
+      password: "cbbbf1862930477113be700bfcc97d8dc53078290c9edf88242643b51e279e34f0cb43fd12bc072d6e984e745adefb4d1ca03c21b3e3811c32f2e0112bed3f43.1a0f04199b3dc42427d56c7a5503b883", // "admin123" properly hashed
       email: "admin@ecommercepro.com",
       firstName: "Admin",
       lastName: "User",
@@ -362,7 +362,7 @@ export class MemStorage implements IStorage {
     );
 
     if (existingItem) {
-      existingItem.quantity += insertCartItem.quantity;
+      existingItem.quantity += insertCartItem.quantity || 1;
       this.cartItems.set(existingItem.id, existingItem);
       return existingItem;
     }
@@ -370,6 +370,7 @@ export class MemStorage implements IStorage {
     const cartItem: CartItem = {
       ...insertCartItem,
       id: this.currentCartItemId++,
+      quantity: insertCartItem.quantity || 1,
       createdAt: new Date(),
     };
     this.cartItems.set(cartItem.id, cartItem);
@@ -425,6 +426,7 @@ export class MemStorage implements IStorage {
     const order: Order = {
       ...insertOrder,
       id: this.currentOrderId++,
+      status: insertOrder.status || "pending",
       createdAt: new Date(),
     };
     this.orders.set(order.id, order);
