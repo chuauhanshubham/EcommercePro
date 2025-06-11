@@ -6,6 +6,7 @@ import {
   orders, 
   orderItems, 
   wishlistItems,
+  reviews,
   type User, 
   type InsertUser,
   type Category,
@@ -19,7 +20,9 @@ import {
   type OrderItem,
   type InsertOrderItem,
   type WishlistItem,
-  type InsertWishlistItem
+  type InsertWishlistItem,
+  type Review,
+  type InsertReview
 } from "@shared/schema";
 import session from "express-session";
 import createMemoryStore from "memorystore";
@@ -68,6 +71,12 @@ export interface IStorage {
   addToWishlist(item: InsertWishlistItem): Promise<WishlistItem>;
   removeFromWishlist(userId: number, productId: number): Promise<boolean>;
 
+  // Review management
+  getProductReviews(productId: number): Promise<(Review & { user: Pick<User, 'username' | 'firstName' | 'lastName'> })[]>;
+  addReview(review: InsertReview): Promise<Review>;
+  updateReview(id: number, updates: Partial<Review>): Promise<Review | undefined>;
+  deleteReview(id: number): Promise<boolean>;
+
   sessionStore: session.Store;
 }
 
@@ -79,6 +88,7 @@ export class MemStorage implements IStorage {
   private orders: Map<number, Order>;
   private orderItems: Map<number, OrderItem>;
   private wishlistItems: Map<number, WishlistItem>;
+  private reviews: Map<number, Review>;
   private currentUserId: number;
   private currentCategoryId: number;
   private currentProductId: number;
@@ -86,6 +96,7 @@ export class MemStorage implements IStorage {
   private currentOrderId: number;
   private currentOrderItemId: number;
   private currentWishlistItemId: number;
+  private currentReviewId: number;
   public sessionStore: session.Store;
 
   constructor() {
@@ -96,6 +107,7 @@ export class MemStorage implements IStorage {
     this.orders = new Map();
     this.orderItems = new Map();
     this.wishlistItems = new Map();
+    this.reviews = new Map();
     this.currentUserId = 1;
     this.currentCategoryId = 1;
     this.currentProductId = 1;
@@ -103,6 +115,7 @@ export class MemStorage implements IStorage {
     this.currentOrderId = 1;
     this.currentOrderItemId = 1;
     this.currentWishlistItemId = 1;
+    this.currentReviewId = 1;
     
     this.sessionStore = new MemoryStore({
       checkPeriod: 86400000,
