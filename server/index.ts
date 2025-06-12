@@ -3,14 +3,15 @@ dotenv.config(); // ⭐️ Must be first to load .env variables
 
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+import { setupVite, log } from "./vite";
+import { serveStatic } from "./serveStatic"; // ✅ NEW import
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Simple logging middleware
+// Logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
@@ -40,10 +41,9 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  // Register all routes (REST APIs)
   const server = await registerRoutes(app);
 
-  // Error handling middleware
+  // Error handler
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
@@ -51,14 +51,13 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // Dev vs Production static asset handling
+  // Serve static frontend build in production
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
-    serveStatic(app);
+    serveStatic(app); // ✅ Serve React build from dist/public
   }
 
-  // Start server on PORT from .env or fallback to 5000
   const port = Number(process.env.PORT) || 5000;
   app.listen(port, "0.0.0.0", () => {
     console.log(`✅ Server is running on port ${port}`);
