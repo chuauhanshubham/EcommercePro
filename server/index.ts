@@ -59,7 +59,7 @@ app.use((req, res, next) => {
   }
 
   // Start server on PORT from .env or fallback to 5000
-  const port = Number(process.env.PORT) || 5000;
+  const port = Number(process.env.PORT) ||           https://ecommercepro-73pt.onrender.com      ;
   app.listen(port, "0.0.0.0", () => {
     console.log(`✅ Server is running on port ${port}`);
   });
