@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config(); // ⭐️ Must be first to load .env variables
+import cors from "cors";
+app.use(cors());
 
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
@@ -9,6 +11,12 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(
+  cors({
+    origin: "https://playful-monstera-59ce3e.netlify.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 
 // Simple logging middleware
 app.use((req, res, next) => {
@@ -59,7 +67,7 @@ app.use((req, res, next) => {
   }
 
   // Start server on PORT from .env or fallback to 5000
-  const port = Number(process.env.PORT) ||           https://ecommercepro-73pt.onrender.com      ;
+  const port = Number(process.env.PORT) ||   5000     ;
   app.listen(port, "0.0.0.0", () => {
     console.log(`✅ Server is running on port ${port}`);
   });

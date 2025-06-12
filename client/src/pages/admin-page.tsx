@@ -20,19 +20,19 @@ export default function AdminPage() {
   const { toast } = useToast();
 
   const { data: stats } = useQuery({
-    queryKey: ["/api/admin/stats"],
+    queryKey: ["https://ecommercepro-73pt.onrender.com/api/admin/stats"],
   });
 
   const { data: products = [], isLoading: productsLoading } = useQuery<Product[]>({
-    queryKey: ["/api/products"],
+    queryKey: ["https://ecommercepro-73pt.onrender.com/api/products"],
   });
 
   const { data: categories = [] } = useQuery<Category[]>({
-    queryKey: ["/api/categories"],
+    queryKey: ["https://ecommercepro-73pt.onrender.com/api/categories"],
   });
 
   const { data: orders = [] } = useQuery<Order[]>({
-    queryKey: ["/api/orders"],
+    queryKey: ["https://ecommercepro-73pt.onrender.com/api/orders"],
   });
 
   const [productForm, setProductForm] = useState({
@@ -46,12 +46,12 @@ export default function AdminPage() {
 
   const createProductMutation = useMutation({
     mutationFn: async (productData: any) => {
-      const response = await apiRequest("POST", "/api/products", productData);
+      const response = await apiRequest("POST", "https://ecommercepro-73pt.onrender.com/api/products", productData);
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/products"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/stats"] });
+      queryClient.invalidateQueries({ queryKey: ["https://ecommercepro-73pt.onrender.com/api/products"] });
+      queryClient.invalidateQueries({ queryKey: ["https://ecommercepro-73pt.onrender.com/api/admin/stats"] });
       setShowAddProduct(false);
       setProductForm({
         name: "",
@@ -77,11 +77,11 @@ export default function AdminPage() {
 
   const deleteProductMutation = useMutation({
     mutationFn: async (productId: number) => {
-      await apiRequest("DELETE", `/api/products/${productId}`);
+      await apiRequest("DELETE", `https://ecommercepro-73pt.onrender.com/api/products/${productId}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/products"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/stats"] });
+      queryClient.invalidateQueries({ queryKey: ["https://ecommercepro-73pt.onrender.com/api/products"] });
+      queryClient.invalidateQueries({ queryKey: ["https://ecommercepro-73pt.onrender.com/api/admin/stats"] });
       toast({
         title: "Success",
         description: "Product deleted successfully",
@@ -98,11 +98,11 @@ export default function AdminPage() {
 
   const updateOrderStatusMutation = useMutation({
     mutationFn: async ({ orderId, status }: { orderId: number; status: string }) => {
-      const response = await apiRequest("PUT", `/api/orders/${orderId}/status`, { status });
+      const response = await apiRequest("PUT", `https://ecommercepro-73pt.onrender.com/api/orders/${orderId}/status`, { status });
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/orders"] });
+      queryClient.invalidateQueries({ queryKey: ["https://ecommercepro-73pt.onrender.com/api/orders"] });
       toast({
         title: "Success",
         description: "Order status updated successfully",
