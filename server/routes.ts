@@ -17,6 +17,7 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
+  
   app.post("/api/categories", async (req, res) => {
     if (!req.isAuthenticated() || !req.user?.isAdmin) {
       return res.status(403).json({ message: "Admin access required" });

@@ -13,6 +13,7 @@ declare global {
   }
 }
 
+
 const scryptAsync = promisify(scrypt);
 
 async function hashPassword(password: string) {
