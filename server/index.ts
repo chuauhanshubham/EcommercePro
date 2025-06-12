@@ -1,10 +1,10 @@
 import dotenv from "dotenv";
-dotenv.config(); // ⭐️ Must be first to load .env variables
+dotenv.config(); // ⭐️ Load env vars first
 
-import express, { type Request, Response, NextFunction } from "express";
+import express, { type Request, type Response, type NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, log } from "./vite";
-import { serveStatic } from "./serveStatic"; // ✅ NEW import
+import { serveStatic } from "./serveStatic"; // ✅ Serves React in production
 
 const app = express();
 
@@ -51,11 +51,11 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // Serve static frontend build in production
+  // Dev vs Production serve
   if (app.get("env") === "development") {
-    await setupVite(app, server);
+    await setupVite(app, server); // Vite dev middleware
   } else {
-    serveStatic(app); // ✅ Serve React build from dist/public
+    serveStatic(app); // ✅ Serve React from dist/public
   }
 
   const port = Number(process.env.PORT) || 5000;
