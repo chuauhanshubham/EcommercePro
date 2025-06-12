@@ -7,7 +7,6 @@ import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 export default async function () {
   const plugins = [react(), runtimeErrorOverlay()];
 
-  // ✅ Safely await cartographer only if needed
   if (
     process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
@@ -17,6 +16,7 @@ export default async function () {
   }
 
   return defineConfig({
+    root: path.resolve(__dirname, "client"), // Root points to client/
     plugins,
     resolve: {
       alias: {
@@ -25,7 +25,6 @@ export default async function () {
         "@assets": path.resolve(__dirname, "attached_assets"),
       },
     },
-    root: path.resolve(__dirname, "client"),
     build: {
       outDir: path.resolve(__dirname, "dist/public"),
       emptyOutDir: true,
