@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
-    origin: "https://playful-monstera-59ce3e.netlify.app",
+    origin: "https://soft-flan-1e1d0c.netlify.app/",
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
