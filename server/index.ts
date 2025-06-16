@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config(); // ⭐️ Must be first to load .env variables
 import cors from "cors";
-app.use(cors());
+
 
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
